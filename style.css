@@ -1,0 +1,218 @@
+body {
+  margin: 0;
+  background: #0b1515;
+  font-family: system-ui;
+  color: white;
+  text-align: center;
+}
+
+/* ===== GRID ===== */
+.title {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 160px);
+  gap: 20px;
+  padding: 40px;
+}
+
+.game-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .3s;
+}
+
+.game-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-card:hover {
+  transform: scale(1.08);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: .3s;
+}
+
+.game-card:hover .overlay {
+  opacity: 1;
+}
+
+/* ===== VIEWER ===== */
+.viewer-body {
+  overflow: hidden;
+}
+
+.game-viewer {
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+iframe {
+  width: 80%;
+  height: 90%;
+  border-radius: 16px;
+  border: none;
+  background: #1a1a1a;
+}
+
+/* Bottom bar */
+.bottom-bar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  background: #0f1f1f;
+}
+
+.bottom-bar button {
+  background: #1a3333;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Side bar */
+.side-bar {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.side-bar button {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: none;
+  background: #1a3333;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+/* make room for bottom bar */
+iframe {
+  width: 100%;
+  height: calc(100% - 64px);
+  border: none;
+  display: none;
+}
+
+/* bottom bar inside viewer */
+.game-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 64px;
+  padding: 0 16px;
+
+  background: #0e1b1b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: white;
+}
+
+/* left side */
+.game-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6a5acd, #8a2be2);
+}
+
+.game-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.game-category {
+  font-size: 12px;
+  opacity: .7;
+}
+
+.game-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* right side */
+.game-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rating {
+  font-size: 14px;
+  opacity: .85;
+}
+
+.game-right button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: .85;
+}
+
+.game-right button:hover {
+  opacity: 1;
+}
+
+/* Width of scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
+  background: #111;
+  border-radius: 10px;
+}
+
+/* Handle (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #08081e, #0c1118 70%, #000000);
+}
