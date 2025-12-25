@@ -32,7 +32,7 @@
 <!-- Right Sidebar -->
 <div class="side-bar">
   <button class="side-btn"><a href="index.html"><img src="home.png" alt="Home"></a></button>
-  <button class="side-btn"><a href="index.html"><img src="game.png" alt="Games"></a></button>
+  <button class="side-btn"><a href="index.html"><img src="https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/gameicon2.png" alt="Games"></a></button>
   <button class="side-btn"><a href="apps.html"><img src="Apps.png" alt="Apps"></a></button>
   <button class="side-btn"><a href="index.html"><img src="settings.png" alt="Settings"></a></button>
 </div>
@@ -76,8 +76,30 @@
 
   .side-btn {
   position: relative;
+  transition: transform .1s, filter .1s;
 }
 
+.side-btn::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 120%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #111;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.side-btn:hover::after {
+  opacity: 1;
+}
 .side-btn::after {
   content: attr(data-text);
   position: absolute;
@@ -275,6 +297,11 @@ body {
       url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/emulatorjs.html"
     },
     {
+      name: "Fluidism",
+      image: "images/divide.png",
+      url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Games@main/fluidism.html"
+    },
+    {
     
       name: "PICO8edu",
       image: "images/divide.png",
@@ -292,7 +319,6 @@ body {
       image: "images/divide.png",
       url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/silk.html"
     },
-
 
 
   ];
