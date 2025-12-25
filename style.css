@@ -116,8 +116,6 @@ iframe {
 }
 /* make room for bottom bar */
 iframe {
-  width: 100%;
-  height: calc(100% - 64px);
   border: none;
   display: none;
 }
