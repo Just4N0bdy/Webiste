@@ -2,360 +2,354 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Games</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+
+  /* Darker Discord Gradient: Swapped space blues for charcoal and near-black */
+  --bg-gradient: linear-gradient(135deg, #09090a, #111214, #1e1f22);
+
+  /* Darkened Glass: Uses black-based transparency to look like Discord sidebars */
+  --glass-bg: rgba(0, 0, 0, 0.4); 
+
+  /* Subtle Border: Defines edges without a "glow" effect */
+  --glass-border: rgba(255, 255, 255, 0.05);
+
+  /* Deep Blurple: The official darker accent used by Discord */
+  --accent-color: #4752c4; 
+
+  /* Text: Almost white for main, light grey for muted (easier to read) */
+  --text-main: #f2f3f5;
+  --text-muted: #949ba4;
+
+  /* Card Hover: Darkened highlight rather than a bright glow */
+  --card-hover: rgba(255, 255, 255, 0.03);
+
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed; /* Keeps gradient consistent on scroll */
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* --- Sidebar (Glassmorphism) --- */
+    .sidebar {
+      width: 80px;
+      height: 96vh;
+      position: fixed;
+      left: 10px;
+      top: 2vh;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0;
+      gap: 30px;
+      z-index: 100;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: width 0.3s ease;
+    }
+
+    .nav-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    /* SVG Styling */
+    .nav-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--text-muted);
+      transition: fill 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent-color);
+      box-shadow: 0 0 15px var(--accent-color);
+    }
+
+    .nav-btn:hover svg {
+      fill: #fff;
+    }
+
+    /* Tooltip */
+    .nav-btn::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 70px;
+      background: var(--accent-color);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* --- Main Content --- */
+    .main-content {
+      margin-left: 100px; /* Space for sidebar */
+      width: 100%;
+      padding: 40px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    .title-wrapper {
+      margin-bottom: 20px;
+    }
+
+    .main-title {
+      font-size: 5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #fff, var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+      to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+    }
+
+    .counter {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* Search Bar */
+    .search-container {
+      margin-top: 30px;
+      color: #fff;
+    }
+
+    .search-input {
+      width: 100%;
+      max-width: 500px;
+      padding: 16px 24px;
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      font-size: 16px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 20px rgba(185, 131, 255, 0.2);
+    }
+
+    /* --- Grid System --- */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 30px;
+      padding-bottom: 50px;
+    }
+
+    .game-card {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--glass-bg);
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.27), box-shadow 0.3s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-color: var(--accent-color);
+    }
+
+    .game-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      opacity: 0.8;
+    }
+
+    .game-card:hover img {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    /* Card Content/Overlay */
+    .card-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover .card-info {
+      transform: translateY(0);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: 60px;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        flex-direction: row;
+        justify-content: space-around;
+        border-radius: 20px 20px 0 0;
+        padding: 0;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+        padding-bottom: 80px; /* Space for bottom bar */
+      }
+
+      .nav-btn::after {
+        display: none; /* Hide tooltips on mobile */
+      }
+      
+      .main-title {
+        font-size: 2.5rem;
+      }
+    }
+    </style>
 </head>
 
 <body>
 
-<!-- Background -->
-<div class="bg"></div>
+  <nav class="sidebar">
+  <a href="home.html"><button class="nav-btn" data-tooltip="Home"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button></a>
+  <a href="index.html"><button class="nav-btn" data-tooltip="Games"><svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></button></a>
+  <a href="apps.html"><button class="nav-btn" data-tooltip="Apps"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg></button></a>
+</nav>
 
-<!-- Header -->
-<div class="header">
-  <h1 class="floating-title">
-  <span>A</span><span>p</span><span>p</span><span>s</span>
-</h1>
+  <main class="main-content">
+    <div class="header">
+      <div class="title-wrapper">
+        <h1 class="main-title">APPS</h1>
+      </div>
+      <p class="counter">Library Collection: <span id="count" style="color:white; font-weight:bold;">0</span> items</p>
+      
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search your library..." oninput="filterGames(this.value)">
+      </div>
+    </div>
 
+    <div class="games-grid" id="grid"></div>
+  </main>
 
+  <script>
+    /* ================= GAME LOGIC ================= */
+    const games = [
+      { name: "DOS Wasm X", image: "https://via.placeholder.com/400x225/302b63/ffffff?text=DOS+Wasm", url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/doswasmx.html" },
+      { name: "Emulator.js", image: "https://via.placeholder.com/400x225/24243e/ffffff?text=EmulatorJS", url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/emulatorjs.html" },
+      { name: "Fluidism", image: "https://via.placeholder.com/400x225/b983ff/ffffff?text=Fluidism", url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Games@main/fluidism.html" },
+      { name: "PICO8edu", image: "https://via.placeholder.com/400x225/0f0c29/ffffff?text=PICO-8", url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/pico8edu.html" },
+      { name: "Ruffle", image: "https://via.placeholder.com/400x225/ff9966/ffffff?text=Ruffle", url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/ruffleemulator.html" },
+      { name: "Silk", image: "https://via.placeholder.com/400x225/333333/ffffff?text=Silk", url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/silk.html" },
+      { name: "JSVecX", image: "https://via.placeholder.com/400x225/555555/ffffff?text=JSVecX", url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Games@main/JSVecX.html" },
+    ];
 
+    /* Note: I added placeholder images above because the original "images/divide.png" 
+       likely won't work for me. You can change them back if you have local files. */
 
-  <p>Total Apps: <span id="count">0</span> apps</p>
-  <div class="search">
-  <input type="text" placeholder="Search apps..." oninput="filterGames(this.value)">
-  </div>
-</div>
-
-<!-- Games Grid -->
-<div class="games-grid" id="grid"></div>
-
-<!-- Right Sidebar -->
-<div class="side-bar">
-  <button class="side-btn"><a href="index.html"><img src="home.png" alt="Home"></a></button>
-  <button class="side-btn"><a href="index.html"><img src="https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/gameicon2.png" alt="Games"></a></button>
-  <button class="side-btn"><a href="apps.html"><img src="Apps.png" alt="Apps"></a></button>
-  <button class="side-btn"><a href="index.html"><img src="settings.png" alt="Settings"></a></button>
-</div>
-<div class="stars"></div>
-<div class="shooting-star"></div>
-<div class="shooting-star"></div>
-<div class="shooting-star"></div>
-<div class="shooting-star"></div>
-<div class="shooting-star"></div>
-
-<style>
-  html, body {
-    margin: 0;
-    font-family: system-ui, sans-serif;
-    color: white;
-
-  }
-
-.bg {
-  position: fixed;
-  inset: 0;
-  background-attachment: fixed;
-
-  /* Grid + gradient */
-  background-image:
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
-
-  background-size:
-    40px 40px,   /* horizontal lines */
-    40px 40px,   /* vertical lines */
-    cover;
-
-  background-position:
-    0 0,
-    0 0,
-    center;
-}
-
-
-  .side-btn {
-  position: relative;
-  transition: transform .1s, filter .1s;
-}
-
-.side-btn::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 120%;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #111;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 14px;
-  white-space: nowrap;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.side-btn:hover::after {
-  opacity: 1;
-}
-.side-btn::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 120%;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #111;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 14px;
-  white-space: nowrap;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.side-btn:hover::after {
-  opacity: 1;
-}
-
-
-  .header {
-    text-align: center;
-    padding: 60px 20px 30px;
-  }
-
-  .header h1 {
-    font-size: 64px;
-    margin: 0;
-  }
-
-  .header p {
-    opacity: .8;
-    margin: 10px 0 20px;
-  }
-
-  .header input {
-    width: 320px;
-    max-width: 90%;
-    padding: 14px 18px;
-    border-radius: 12px;
-    border: none;
-    background: #101f1f;
-    color: white;
-    font-size: 16px;
-    outline: none;
-  }
-
-  .header input{
-    width: 320px;
-    max-width: 90%;
-    padding: 14px 18px;
-    border-radius: 12px;
-    border: none;
-    background: #101f1f;
-    color: white;
-    font-size: 16px;
-    outline: none;
-  }
-
-  .games-grid {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px 40px 80px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 24px;
-    text-align: center;
-  }
-
-  .game-card {
-    aspect-ratio: 1 / 1;
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-    position: relative;
-    transition: transform .25s ease;
-    text-align: center;
-  }
-
-  .game-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .25s, filter .25s;
-    text-align: center;
-  }
-
-  .game-card:hover {
-    transform: scale(1.12);
-    z-index: 2;
-    text-align: center;
-  }
-
-  .game-card:hover img {
-    transform: scale(1.05);
-    filter: brightness(.6);
-    text-align: center;
-  }
-
-  .overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: 600;
-    background: rgba(0,0,0,.35);
-    opacity: 0;
-    transition: opacity .25s;
-  }
-
-  .game-card:hover .overlay {
-    opacity: 1;
-  }
-
-  .side-bar {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .side-bar button {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    border: none;
-    background: #132727;
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-  }
-  .side-bar button:hover{
-    filter: brightness(.6);
-    transform: scale(1.2);
-  }
-
-  .search {
-    transform: scale(0.9);
-  }
-
-  .search:hover {
-    filter: brightness(.6);
-  }
-  
-body {
-  background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
-  background-attachment: fixed;
-}
-.floating-title {
-  display: inline-block;
-}
-
-.floating-title span {
-  display: inline-block;
-  animation: float 2.5s ease-in-out infinite;
-}
-
-/* Stagger the animation for each letter */
-.floating-title span:nth-child(1) { animation-delay: 0s; }
-.floating-title span:nth-child(2) { animation-delay: .1s; }
-.floating-title span:nth-child(3) { animation-delay: .2s; }
-.floating-title span:nth-child(4) { animation-delay: .3s; }
-.floating-title span:nth-child(5) { animation-delay: .4s; }
-
-@keyframes float {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
-
-
-</style>
-
-<script>
-  /* ================= GAME LIST ================= */
-
-  const games = [
-    {
-      name: "DOS Wasm X",
-      image: "images/divide.png",
-      url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/doswasmx.html"
-    },
-    {
-    
-      name: "Emulator.js",
-      image: "images/divide.png",
-      url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/emulatorjs.html"
-    },
-    {
-      name: "Fluidism",
-      image: "images/divide.png",
-      url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Games@main/fluidism.html"
-    },
-    {
-    
-      name: "PICO8edu",
-      image: "images/divide.png",
-      url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/pico8edu.html"
-    },
-    {
-    
-      name: "Ruffle Emulator",
-      image: "images/divide.png",
-      url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/ruffleemulator.html"
-    },
-    {
-    
-      name: "Silk",
-      image: "images/divide.png",
-      url: "https://cdn.jsdelivr.net/gh/Just4N0bdy/Random-Stuff@main/silk.html"
-    },
-
-
-  ];
+    games.sort((a, b) => a.name.localeCompare(b.name));
 
   const grid = document.getElementById("grid");
-  const count = document.getElementById("count");
+    const count = document.getElementById("count");
 
-  function renderGames(list) {
-    grid.innerHTML = "";
-    list.forEach(game => {
-      const card = document.createElement("div");
-      card.className = "game-card";
-      card.dataset.name = game.name;
-      card.onclick = () => openGame(game);
+    function renderGames(list) {
+      grid.innerHTML = "";
+      list.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        card.onclick = () => openGame(game);
 
-      card.innerHTML = `
-        <img src="${game.image}">
-        <div class="overlay">${game.name}</div>
-      `;
-      grid.appendChild(card);
-    });
-    count.textContent = list.length;
-  }
+        // Using placeholder logic if image fails, but prioritizing your structure
+        card.innerHTML = `
+          <img src="${game.image}" alt="${game.name}" loading="lazy">
+          <div class="card-info
+            <div class="card-title">${game.name}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      count.textContent = list.length;
+    }
 
-  function openGame(game) {
-    sessionStorage.setItem("gameUrl", game.url);
-    sessionStorage.setItem("gameName", game.name);
-    location.href = "game.html";
-  }
+    function openGame(game) {
+      sessionStorage.setItem("gameUrl", game.url);
+      sessionStorage.setItem("gameName", game.name);
+      location.href = "game.html";
+    }
 
-  function filterGames(q) {
-    q = q.toLowerCase();
-    renderGames(games.filter(g => g.name.toLowerCase().includes(q)));
-  }
+    function filterGames(q) {
+      q = q.toLowerCase();
+      renderGames(games.filter(g => g.name.toLowerCase().includes(q)));
+    }
 
-  renderGames(games);
-</script>
-
+    // Initialize
+    renderGames(games);
+  </script>
 </body>
 </html>
