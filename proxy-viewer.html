@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Libarbry</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #0f0c29; }
+        /* Reuse your sidebar and HUD styles from the Game Viewer here */
+        #proxyFrame {
+            width: 100%;
+            height: calc(100% - 70px); /* Leave room for a bottom bar */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="proxyFrame"></iframe>
+    <script>
+        const target = sessionStorage.getItem("proxyUrl");
+        if (target) {
+            document.getElementById("proxyFrame").src = target;
+        }
+    </script>
+</body>
+</html>
